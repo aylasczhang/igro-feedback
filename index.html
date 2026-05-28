@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iGRO 智能诊断报告 - 腾讯广告联盟</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- 顶部导航 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <span class="brand-icon">🤖</span>
+                <span class="brand-text">iGRO 智能 Agent</span>
+                <span class="brand-badge">NEW</span>
+            </div>
+            <div class="nav-subtitle">腾讯广告联盟 · 开发者平台</div>
+        </div>
+    </nav>
+
+    <!-- Hero 区域 -->
+    <section class="hero">
+        <div class="hero-bg-pattern"></div>
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-tag">🚀 618 电商大促专属</div>
+                <h1 class="hero-title">
+                    iGRO 个性化诊断报告
+                    <span class="hero-highlight">AI 驱动的智能流量诊断提收</span>
+                </h1>
+                <p class="hero-desc">
+                    基于大模型构建的智能商业化诊断 Agent，让"提收建议"从经验驱动走向<strong>数据 + AI 驱动</strong>，从千人一面走向<strong>千人千面</strong>。
+                </p>
+                <a href="#feedback-form" class="hero-cta">📝 填写反馈，帮助我们做得更好</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- iGRO 是什么 -->
+    <section class="section section-what">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">iGRO 是什么？</h2>
+                <p class="section-subtitle">不是报告生成器，而是能按媒体画像输出建议的<strong>智能体</strong></p>
+            </div>
+            <p class="section-desc">
+                iGRO 是腾讯营销联盟基于大模型构建的智能商业化诊断 Agent。针对 618 节点，iGRO 为每一个接入腾讯广告联盟的媒体生成了一份专属《618 电商大促提收报告》。
+            </p>
+            
+            <!-- 对比表格 -->
+            <div class="compare-table">
+                <div class="compare-header">
+                    <div class="compare-col">能力维度</div>
+                    <div class="compare-col old">传统方式</div>
+                    <div class="compare-col new">iGRO 个性化报告</div>
+                </div>
+                <div class="compare-row">
+                    <div class="compare-col label">数据基准</div>
+                    <div class="compare-col old">无行业站位</div>
+                    <div class="compare-col new">同行业 5 档分桶水位<br><small>（0%~10% / 10%~30% / 30%~60% / 60%~85% / 85%~100%）</small></div>
+                </div>
+                <div class="compare-row">
+                    <div class="compare-col label">诊断粒度</div>
+                    <div class="compare-col old">通用建议</div>
+                    <div class="compare-col new">媒体 ID 级<br><small>定位到具体广告场景、具体屏蔽规则</small></div>
+                </div>
+                <div class="compare-row">
+                    <div class="compare-col label">形态配置</div>
+                    <div class="compare-col old">"建议优化 Bidding"</div>
+                    <div class="compare-col new">"建议下调底价 + 全场景接入无底价 Bidding"</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 三大看点 -->
+    <section class="section section-highlights">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">🔥 iGRO能做什么？</h2>
+            </div>
+            
+            <div class="highlights-grid">
+                <!-- 看点一 -->
+                <div class="highlight-card">
+                    <div class="highlight-number">01</div>
+                    <div class="highlight-icon">📍</div>
+                    <h3 class="highlight-title">场景效率 × 同行业水位的"GPS 定位"</h3>
+                    <div class="highlight-content">
+                        <p>报告会列出你当前全部广告场景的预估收入占比与 CPM，并告诉你：</p>
+                        <ul>
+                            <li>广告场景是否接全？</li>
+                            <li>各场景的价值是否充分体现？</li>
+                        </ul>
+                        <div class="highlight-quote">
+                            结论不再是"你做得不错"，而是<strong>"你处在行业的哪个档位，下一步该追哪一档"</strong>。
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 看点二 -->
+                <div class="highlight-card">
+                    <div class="highlight-number">02</div>
+                    <div class="highlight-icon">🔬</div>
+                    <h3 class="highlight-title">变现漏斗三率诊断 + 自动归因</h3>
+                    <div class="highlight-content">
+                        <p>针对<strong>承接率 / 填充率 / 曝光率</strong>三道关卡，iGRO 会自动判断你的状态，并给出可执行的拆解动作：</p>
+                        <ul>
+                            <li>拆分多刷广告位</li>
+                            <li>合并并发请求</li>
+                            <li>优化预加载时机</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 看点三 -->
+                <div class="highlight-card">
+                    <div class="highlight-number">03</div>
+                    <div class="highlight-icon">🛡️</div>
+                    <h3 class="highlight-title">屏蔽规则 TOP5 影响测算 + 大促临时放开</h3>
+                    <div class="highlight-content">
+                        <p>最容易被忽视、却最容易藏着钱的环节。iGRO 会按维度评估屏蔽规则颗粒度，并测算 TOP5 规则的累计影响：</p>
+                        <ul>
+                            <li>颗粒度过粗的"行业级"屏蔽 → 建议下沉到"包名"级别</li>
+                            <li>大促期间可临时放开部分规则，测试增量预算</li>
+                            <li>618 一过即可恢复，<strong>风险可控</strong></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 获取入口 -->
+    <section class="section section-cta">
+        <div class="container">
+            <div class="cta-card">
+                <h2>📥 现在就拿到属于你的报告</h2>
+                <p>iGRO 个性化诊断报告不需要你提任何需求、不需要你拉任何数据</p>
+                <div class="cta-path">
+                    <div class="path-step">
+                        <span class="step-num">1</span>
+                        <span>登录<strong>腾讯广告联盟开发者平台</strong></span>
+                    </div>
+                    <div class="path-arrow">→</div>
+                    <div class="path-step">
+                        <span class="step-num">2</span>
+                        <span>首页右侧点击<strong>小盟图标</strong></span>
+                    </div>
+                    <div class="path-arrow">→</div>
+                    <div class="path-step">
+                        <span class="step-num">3</span>
+                        <span>点击<strong>「智能报告」</strong></span>
+                    </div>
+                    <div class="path-arrow">→</div>
+                    <div class="path-step">
+                        <span class="step-num">4</span>
+                        <span>选择<strong>「诊断日期」和「诊断媒体」</strong></span>
+                    </div>
+                    <div class="path-arrow">→</div>
+                    <div class="path-step">
+                        <span class="step-num">5</span>
+                        <span><strong>一键生成</strong></span>
+                    </div>
+                </div>
+                <a href="https://adnet.qq.com" target="_blank" class="cta-link">前往开发者平台 adnet.qq.com →</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 反馈表单 -->
+    <section class="section section-form" id="feedback-form">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">📝 开发者反馈与建议问卷</h2>
+                <p class="section-subtitle">非常感谢您体验 iGRO 个性化诊断报告，我们将持续提高 iGRO 的服务能力，期待您的反馈与建议。</p>
+            </div>
+
+            <form class="feedback-form" action="https://formspree.io/f/xpwdggvp" method="POST" id="feedbackForm">
+                
+                <!-- Q01 单选 -->
+                <div class="form-group">
+                    <label class="form-label required">
+                        <span class="q-number">01</span>
+                        整体而言，这份报告对你近期的提收决策起到了多大作用？
+                    </label>
+                    <div class="radio-group">
+                        <label class="radio-option">
+                            <input type="radio" name="q01" value="有用，已驱动我们调整配置" required>
+                            <span class="radio-custom"></span>
+                            <span class="radio-text">有用，已驱动我们调整配置</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="q01" value="比较有用，提供了新的优化思路与数据参考">
+                            <span class="radio-custom"></span>
+                            <span class="radio-text">比较有用，提供了新的优化思路与数据参考</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="q01" value="一般，部分内容有价值，部分仍待验证">
+                            <span class="radio-custom"></span>
+                            <span class="radio-text">一般，部分内容有价值，部分仍待验证</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="q01" value="用处不大，建议与我们的实际情况偏差较大">
+                            <span class="radio-custom"></span>
+                            <span class="radio-text">用处不大，建议与我们的实际情况偏差较大</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="q01" value="还未来得及深入阅读/应用">
+                            <span class="radio-custom"></span>
+                            <span class="radio-text">还未来得及深入阅读 / 应用</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="q01" value="其他">
+                            <span class="radio-custom"></span>
+                            <span class="radio-text">其他</span>
+                        </label>
+                    </div>
+                    <input type="text" name="q01_other" class="form-input other-input" placeholder="请输入其他内容..." style="display:none;">
+                </div>
+
+                <!-- Q02 多选 -->
+                <div class="form-group">
+                    <label class="form-label required">
+                        <span class="q-number">02</span>
+                        报告中的以下模块，哪些对你最有实操价值？
+                        <span class="multi-tag">[多选]</span>
+                    </label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-option">
+                            <input type="checkbox" name="q02" value="场景效率×同行业水位双维诊断">
+                            <span class="checkbox-custom"></span>
+                            <span class="checkbox-text">场景效率 × 同行业水位双维诊断</span>
+                        </label>
+                        <label class="checkbox-option">
+                            <input type="checkbox" name="q02" value="变现漏斗（承接率/填充率/曝光率）拆解×同行业水位">
+                            <span class="checkbox-custom"></span>
+                            <span class="checkbox-text">变现漏斗（承接率 / 填充率 / 曝光率）拆解 × 同行业水位</span>
+                        </label>
+                        <label class="checkbox-option">
+                            <input type="checkbox" name="q02" value="优参竞建议（底价与Bidding策略）">
+                            <span class="checkbox-custom"></span>
+                            <span class="checkbox-text">优参竞建议（底价与 Bidding 策略）</span>
+                        </label>
+                        <label class="checkbox-option">
+                            <input type="checkbox" name="q02" value="屏蔽规则影响与放开建议">
+                            <span class="checkbox-custom"></span>
+                            <span class="checkbox-text">屏蔽规则影响与放开建议</span>
+                        </label>
+                        <label class="checkbox-option">
+                            <input type="checkbox" name="q02" value="SDK版本分布与升级建议">
+                            <span class="checkbox-custom"></span>
+                            <span class="checkbox-text">SDK 版本分布与升级建议</span>
+                        </label>
+                        <label class="checkbox-option">
+                            <input type="checkbox" name="q02" value="暂无特别突出的模块">
+                            <span class="checkbox-custom"></span>
+                            <span class="checkbox-text">暂无特别突出的模块</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Q03 单选 -->
+                <div class="form-group">
+                    <label class="form-label required">
+                        <span class="q-number">03</span>
+                        你认为报告中的「诊断结论」与你实际业务情况的吻合程度如何？
+                    </label>
+                    <div class="radio-group">
+                        <label class="radio-option">
+                            <input type="radio" name="q03" value="非常吻合，几乎每条都能对上号" required>
+                            <span class="radio-custom"></span>
+                            <span class="radio-text">非常吻合，几乎每条都能对上号</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="q03" value="大体吻合，少量数据/结论需要校准">
+                            <span class="radio-custom"></span>
+                            <span class="radio-text">大体吻合，少量数据 / 结论需要校准</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="q03" value="中等吻合，部分行业特性未被识别">
+                            <span class="radio-custom"></span>
+                            <span class="radio-text">中等吻合，部分行业特性未被识别</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="q03" value="偏差较大，与我们的真实运营状况差距明显">
+                            <span class="radio-custom"></span>
+                            <span class="radio-text">偏差较大，与我们的真实运营状况差距明显</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="q03" value="无法判断，数据维度不熟悉">
+                            <span class="radio-custom"></span>
+                            <span class="radio-text">无法判断，数据维度不熟悉</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Q04 多选 -->
+                <div class="form-group">
+                    <label class="form-label required">
+                        <span class="q-number">04</span>
+                        当前你在商业化运营中，最大的痛点 / 卡点是什么？
+                        <span class="multi-tag">[多选]</span>
+                    </label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-option">
+                            <input type="checkbox" name="q04" value="大促窗口期预算抢不到，收益弹性弱">
+                            <span class="checkbox-custom"></span>
+                            <span class="checkbox-text">大促窗口期预算抢不到，收益弹性弱</span>
+                        </label>
+                        <label class="checkbox-option">
+                            <input type="checkbox" name="q04" value="广告位/场景接入不够全，Adload受限">
+                            <span class="checkbox-custom"></span>
+                            <span class="checkbox-text">广告位 / 场景接入不够全，Adload 受限</span>
+                        </label>
+                        <label class="checkbox-option">
+                            <input type="checkbox" name="q04" value="填充率/承接率持续走低，找不到根因">
+                            <span class="checkbox-custom"></span>
+                            <span class="checkbox-text">填充率 / 承接率持续走低，找不到根因</span>
+                        </label>
+                        <label class="checkbox-option">
+                            <input type="checkbox" name="q04" value="屏蔽规则历史包袱重，不敢轻易放开">
+                            <span class="checkbox-custom"></span>
+                            <span class="checkbox-text">屏蔽规则历史包袱重，不敢轻易放开</span>
+                        </label>
+                        <label class="checkbox-option">
+                            <input type="checkbox" name="q04" value="SDK升级覆盖慢，新模板触达受限">
+                            <span class="checkbox-custom"></span>
+                            <span class="checkbox-text">SDK 升级覆盖慢，新模板触达受限</span>
+                        </label>
+                        <label class="checkbox-option">
+                            <input type="checkbox" name="q04" value="数据看板分散，缺乏一站式诊断视角">
+                            <span class="checkbox-custom"></span>
+                            <span class="checkbox-text">数据看板分散，缺乏一站式诊断视角</span>
+                        </label>
+                        <label class="checkbox-option">
+                            <input type="checkbox" name="q04" value="行业对标数据缺失，不知道自己卡在哪一档">
+                            <span class="checkbox-custom"></span>
+                            <span class="checkbox-text">行业对标数据缺失，不知道自己卡在哪一档</span>
+                        </label>
+                        <label class="checkbox-option">
+                            <input type="checkbox" name="q04" value="其他">
+                            <span class="checkbox-custom"></span>
+                            <span class="checkbox-text">其他</span>
+                        </label>
+                    </div>
+                    <input type="text" name="q04_other" class="form-input other-input" placeholder="请输入其他内容..." style="display:none;">
+                </div>
+
+                <!-- Q05 多选 -->
+                <div class="form-group">
+                    <label class="form-label required">
+                        <span class="q-number">05</span>
+                        你最希望 iGRO 下一版增强哪些能力？
+                        <span class="multi-tag">[多选]</span>
+                    </label>
+                    <p class="form-hint">可以是报告的优化，也可以是其他能力的打通</p>
+                    <div class="checkbox-group">
+                        <label class="checkbox-option">
+                            <input type="checkbox" name="q05" value="增加更多预算高峰节点专属诊断">
+                            <span class="checkbox-custom"></span>
+                            <span class="checkbox-text">增加更多预算高峰节点专属诊断</span>
+                        </label>
+                        <label class="checkbox-option">
+                            <input type="checkbox" name="q05" value="提供历史趋势对比（周环比/月同比）">
+                            <span class="checkbox-custom"></span>
+                            <span class="checkbox-text">提供历史趋势对比（周环比 / 月同比）</span>
+                        </label>
+                        <label class="checkbox-option">
+                            <input type="checkbox" name="q05" value="提供可下载的诊断结论PDF">
+                            <span class="checkbox-custom"></span>
+                            <span class="checkbox-text">提供可下载的诊断结论 PDF</span>
+                        </label>
+                        <label class="checkbox-option">
+                            <input type="checkbox" name="q05" value="提供"如果我执行了建议，预计收益变化"的模拟器">
+                            <span class="checkbox-custom"></span>
+                            <span class="checkbox-text">提供"如果我执行了建议，预计收益变化"的模拟器</span>
+                        </label>
+                        <label class="checkbox-option">
+                            <input type="checkbox" name="q05" value="提供"一键配置广告位"的打通式能力">
+                            <span class="checkbox-custom"></span>
+                            <span class="checkbox-text">提供"一键配置广告位"的打通式能力</span>
+                        </label>
+                        <label class="checkbox-option">
+                            <input type="checkbox" name="q05" value="其他">
+                            <span class="checkbox-custom"></span>
+                            <span class="checkbox-text">其他</span>
+                        </label>
+                    </div>
+                    <input type="text" name="q05_other" class="form-input other-input" placeholder="请输入其他内容..." style="display:none;">
+                </div>
+
+                <!-- Q06 简答 -->
+                <div class="form-group">
+                    <label class="form-label">
+                        <span class="q-number">06</span>
+                        针对本次诊断报告的内容、形式、交付方式，你还有哪些建议、吐槽或期望？
+                    </label>
+                    <p class="form-hint">欢迎尖锐反馈，我们会读每一条 🙏</p>
+                    <textarea name="q06" class="form-textarea" placeholder="请输入..." rows="4"></textarea>
+                </div>
+
+                <!-- Q07 简答 -->
+                <div class="form-group">
+                    <label class="form-label">
+                        <span class="q-number">07</span>
+                        针对 iGRO 的更多能力，你还有哪些期望？
+                    </label>
+                    <p class="form-hint">欢迎畅所欲言 💡</p>
+                    <textarea name="q07" class="form-textarea" placeholder="请输入..." rows="4"></textarea>
+                </div>
+
+                <!-- Q08 简答 -->
+                <div class="form-group">
+                    <label class="form-label">
+                        <span class="q-number">08</span>
+                        如果你愿意接受访谈，请留下联系方式
+                    </label>
+                    <p class="form-hint">请提供您的媒体名称 / 联系方式</p>
+                    <input type="text" name="q08" class="form-input" placeholder="请输入...">
+                </div>
+
+                <!-- 隐藏字段：Formspree 跳转回本页 -->
+                <input type="hidden" name="_next" value="https://aylasczhang.github.io/igro-feedback/success.html">
+                <input type="hidden" name="_subject" value="iGRO 新反馈提交">
+
+                <!-- 提交按钮 -->
+                <div class="form-submit">
+                    <button type="submit" class="submit-btn">
+                        <span>提交反馈</span>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="container">
+            <p>© 2024 腾讯广告联盟 · iGRO 智能 Agent | 产品反馈收集</p>
+        </div>
+    </footer>
+
+    <script>
+        // 处理"其他"选项显示输入框
+        document.querySelectorAll('input[name="q01"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                const otherInput = this.closest('.form-group').querySelector('.other-input');
+                otherInput.style.display = this.value === '其他' ? 'block' : 'none';
+            });
+        });
+
+        // Q04 其他
+        document.querySelectorAll('input[name="q04"]').forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                if (this.value === '其他') {
+                    const otherInput = this.closest('.form-group').querySelector('.other-input');
+                    otherInput.style.display = this.checked ? 'block' : 'none';
+                }
+            });
+        });
+
+        // Q05 其他
+        document.querySelectorAll('input[name="q05"]').forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                if (this.value === '其他') {
+                    const otherInput = this.closest('.form-group').querySelector('.other-input');
+                    otherInput.style.display = this.checked ? 'block' : 'none';
+                }
+            });
+        });
+
+        // 表单验证
+        document.getElementById('feedbackForm').addEventListener('submit', function(e) {
+            // 检查Q02是否至少选了一项
+            const q02Checked = document.querySelectorAll('input[name="q02"]:checked');
+            if (q02Checked.length === 0) {
+                e.preventDefault();
+                alert('请至少选择一项 Q02 的选项');
+                return;
+            }
+
+            // 检查Q04是否至少选了一项
+            const q04Checked = document.querySelectorAll('input[name="q04"]:checked');
+            if (q04Checked.length === 0) {
+                e.preventDefault();
+                alert('请至少选择一项 Q04 的选项');
+                return;
+            }
+
+            // 检查Q05是否至少选了一项
+            const q05Checked = document.querySelectorAll('input[name="q05"]:checked');
+            if (q05Checked.length === 0) {
+                e.preventDefault();
+                alert('请至少选择一项 Q05 的选项');
+                return;
+            }
+        });
+
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
