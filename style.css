@@ -462,6 +462,20 @@ body {
     margin: 0 auto;
 }
 
+.feedback-iframe-wrapper {
+    max-width: 760px;
+    margin: 0 auto;
+    background: white;
+    border-radius: var(--radius-lg);
+    padding: 8px;
+    box-shadow: var(--shadow-lg);
+}
+
+.feedback-iframe-wrapper iframe {
+    display: block;
+    min-height: 750px;
+}
+
 .form-group {
     background: white;
     border-radius: var(--radius);
