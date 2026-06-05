@@ -1,938 +1,886 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>个性化流量诊断提收报告</title>
-    <style>
-        :root {
-            --primary: #1a73e8;
-            --primary-dark: #0d47a1;
-            --primary-light: #e3f2fd;
-            --primary-lighter: #f0f7ff;
-            --danger: #e53935;
-            --danger-light: #ffebee;
-            --danger-bg: #fff5f5;
-            --warning: #f57c00;
-            --warning-light: #fff3e0;
-            --success: #2e7d32;
-            --success-light: #e8f5e9;
-            --gray-50: #fafafa;
-            --gray-100: #f5f5f5;
-            --gray-200: #eeeeee;
-            --gray-300: #e0e0e0;
-            --gray-600: #757575;
-            --gray-800: #424242;
-            --gray-900: #212121;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
-            background: linear-gradient(135deg, #e3f2fd 0%, #f0f7ff 50%, #e8eaf6 100%);
-            color: var(--gray-900);
-            line-height: 1.6;
-            min-height: 100vh;
-        }
-
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 40px 20px;
-        }
-
-        /* Header */
-        .report-header {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            border-radius: 16px;
-            padding: 48px 40px;
-            color: white;
-            text-align: center;
-            margin-bottom: 32px;
-            box-shadow: 0 8px 32px rgba(26, 115, 232, 0.3);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .report-header::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
-            animation: pulse 4s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); opacity: 0.5; }
-            50% { transform: scale(1.1); opacity: 0.8; }
-        }
-
-        .report-header h1 {
-            font-size: 32px;
-            font-weight: 700;
-            margin-bottom: 16px;
-            position: relative;
-        }
-
-        .report-header p {
-            font-size: 16px;
-            opacity: 0.9;
-            max-width: 700px;
-            margin: 0 auto;
-            position: relative;
-        }
-
-        /* Account Info */
-        .account-info {
-            background: white;
-            border-radius: 12px;
-            padding: 28px 32px;
-            margin-bottom: 24px;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 16px;
-        }
-
-        .account-info-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .account-info-item .label {
-            color: var(--gray-600);
-            font-size: 14px;
-            white-space: nowrap;
-        }
-
-        .account-info-item .value {
-            font-weight: 600;
-            color: var(--gray-900);
-            font-size: 15px;
-        }
-
-        /* Section */
-        .section {
-            background: white;
-            border-radius: 12px;
-            padding: 32px;
-            margin-bottom: 24px;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-        }
-
-        .section-title {
-            font-size: 22px;
-            font-weight: 700;
-            color: var(--primary-dark);
-            margin-bottom: 24px;
-            padding-bottom: 12px;
-            border-bottom: 2px solid var(--primary-light);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .section-title .icon {
-            width: 32px;
-            height: 32px;
-            background: var(--primary);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 16px;
-        }
-
-        .subsection-title {
-            font-size: 17px;
-            font-weight: 600;
-            color: var(--gray-800);
-            margin: 24px 0 16px;
-        }
-
-        /* Table */
-        .table-wrapper {
-            overflow-x: auto;
-            margin: 16px 0;
-            border-radius: 8px;
-            border: 1px solid var(--gray-200);
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 14px;
-        }
-
-        th {
-            background: var(--primary-light);
-            color: var(--primary-dark);
-            font-weight: 600;
-            padding: 12px 16px;
-            text-align: left;
-            white-space: nowrap;
-        }
-
-        td {
-            padding: 12px 16px;
-            border-top: 1px solid var(--gray-200);
-        }
-
-        tr:hover td {
-            background: var(--gray-50);
-        }
-
-        /* Urgency indicators */
-        .badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-        .badge-danger {
-            background: var(--danger-light);
-            color: var(--danger);
-        }
-
-        .badge-warning {
-            background: var(--warning-light);
-            color: var(--warning);
-        }
-
-        .badge-success {
-            background: var(--success-light);
-            color: var(--success);
-        }
-
-        .badge-normal {
-            background: var(--primary-light);
-            color: var(--primary);
-        }
-
-        /* Progress bars for percentile */
-        .percentile-bar-wrapper {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .percentile-bar {
-            flex: 1;
-            height: 8px;
-            background: var(--gray-200);
-            border-radius: 4px;
-            overflow: hidden;
-            position: relative;
-            min-width: 80px;
-        }
-
-        .percentile-bar-fill {
-            height: 100%;
-            border-radius: 4px;
-            transition: width 1s ease;
-        }
-
-        .percentile-bar-fill.level-high {
-            background: linear-gradient(90deg, #e53935, #ff5252);
-        }
-
-        .percentile-bar-fill.level-medium {
-            background: linear-gradient(90deg, #f57c00, #ffa726);
-        }
-
-        .percentile-bar-fill.level-good {
-            background: linear-gradient(90deg, #1a73e8, #42a5f5);
-        }
-
-        .percentile-bar-fill.level-excellent {
-            background: linear-gradient(90deg, #2e7d32, #66bb6a);
-        }
-
-        /* Alert box */
-        .alert-box {
-            border-radius: 10px;
-            padding: 18px 22px;
-            margin: 16px 0;
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-        }
-
-        .alert-box.danger {
-            background: var(--danger-bg);
-            border: 1px solid #ffcdd2;
-        }
-
-        .alert-box.warning {
-            background: var(--warning-light);
-            border: 1px solid #ffe0b2;
-        }
-
-        .alert-box.success {
-            background: var(--success-light);
-            border: 1px solid #c8e6c9;
-        }
-
-        .alert-box .alert-icon {
-            font-size: 20px;
-            flex-shrink: 0;
-            margin-top: 2px;
-        }
-
-        .alert-box .alert-content {
-            flex: 1;
-        }
-
-        .alert-box .alert-title {
-            font-weight: 700;
-            margin-bottom: 6px;
-            font-size: 15px;
-        }
-
-        .alert-box.danger .alert-title { color: var(--danger); }
-        .alert-box.warning .alert-title { color: var(--warning); }
-        .alert-box.success .alert-title { color: var(--success); }
-
-        .alert-box .alert-text {
-            font-size: 14px;
-            color: var(--gray-800);
-            line-height: 1.7;
-        }
-
-        /* Funnel visualization */
-        .funnel-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin: 24px 0;
-            gap: 4px;
-        }
-
-        .funnel-step {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            width: 100%;
-            max-width: 600px;
-        }
-
-        .funnel-bar {
-            height: 52px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: 600;
-            font-size: 14px;
-            transition: all 0.3s;
-            position: relative;
-        }
-
-        .funnel-bar:hover {
-            transform: scale(1.02);
-            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
-        }
-
-        .funnel-label {
-            font-size: 13px;
-            color: var(--gray-600);
-            min-width: 120px;
-            text-align: right;
-        }
-
-        .funnel-value {
-            font-size: 13px;
-            font-weight: 600;
-            min-width: 80px;
-        }
-
-        /* Diagnosis card */
-        .diagnosis-card {
-            border-radius: 12px;
-            padding: 24px;
-            margin: 20px 0;
-            border: 1px solid var(--gray-200);
-            background: var(--gray-50);
-        }
-
-        .diagnosis-card-title {
-            font-size: 16px;
-            font-weight: 700;
-            color: var(--primary-dark);
-            margin-bottom: 16px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .diagnosis-conclusion {
-            background: white;
-            border-radius: 8px;
-            padding: 16px 20px;
-            margin-bottom: 16px;
-            border-left: 4px solid var(--primary);
-        }
-
-        .diagnosis-conclusion h4 {
-            font-size: 14px;
-            color: var(--primary);
-            margin-bottom: 8px;
-        }
-
-        .diagnosis-conclusion ul {
-            padding-left: 18px;
-            font-size: 14px;
-            line-height: 1.8;
-            color: var(--gray-800);
-        }
-
-        .diagnosis-suggestion {
-            background: white;
-            border-radius: 8px;
-            padding: 16px 20px;
-            border-left: 4px solid var(--success);
-        }
-
-        .diagnosis-suggestion h4 {
-            font-size: 14px;
-            color: var(--success);
-            margin-bottom: 8px;
-        }
-
-        .diagnosis-suggestion ul {
-            padding-left: 18px;
-            font-size: 14px;
-            line-height: 1.8;
-            color: var(--gray-800);
-        }
-
-        /* Urgency callout */
-        .urgency-callout {
-            background: linear-gradient(135deg, #fff5f5 0%, #ffebee 100%);
-            border: 2px solid #ef5350;
-            border-radius: 12px;
-            padding: 20px 24px;
-            margin: 16px 0;
-            position: relative;
-            overflow: hidden;
-            animation: urgencyPulse 2s ease-in-out infinite;
-        }
-
-        @keyframes urgencyPulse {
-            0%, 100% { box-shadow: 0 0 0 0 rgba(229, 57, 53, 0.2); }
-            50% { box-shadow: 0 0 0 8px rgba(229, 57, 53, 0); }
-        }
-
-        .urgency-callout::before {
-            content: '⚠️';
-            position: absolute;
-            top: -10px;
-            right: 20px;
-            font-size: 40px;
-            opacity: 0.15;
-        }
-
-        .urgency-callout .urgency-title {
-            color: var(--danger);
-            font-weight: 700;
-            font-size: 16px;
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .urgency-callout .urgency-text {
-            font-size: 14px;
-            color: var(--gray-800);
-            line-height: 1.7;
-        }
-
-        /* SDK coverage bar */
-        .sdk-coverage {
-            margin: 20px 0;
-        }
-
-        .sdk-coverage-bar {
-            width: 100%;
-            height: 32px;
-            background: var(--gray-200);
-            border-radius: 16px;
-            overflow: hidden;
-            display: flex;
-            position: relative;
-        }
-
-        .sdk-coverage-segment {
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 11px;
-            font-weight: 600;
-            color: white;
-            transition: all 0.3s;
-        }
-
-        .sdk-coverage-legend {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 16px;
-            margin-top: 12px;
-            font-size: 13px;
-        }
-
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .legend-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 3px;
-        }
-
-        /* Impact indicator */
-        .impact-negative {
-            color: var(--danger);
-            font-weight: 700;
-            font-size: 18px;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .container { padding: 20px 12px; }
-            .report-header { padding: 32px 20px; }
-            .report-header h1 { font-size: 24px; }
-            .section { padding: 20px 16px; }
-            .account-info { grid-template-columns: 1fr; }
-            .funnel-step { flex-direction: column; gap: 4px; }
-            .funnel-label { text-align: center; min-width: auto; }
-        }
-
-        /* Animate on scroll */
-        .fade-in {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.6s ease, transform 0.6s ease;
-        }
-
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>优酷视频 · 个性化流量诊断提收报告</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --primary: #1a73e8;
+    --primary-light: #42a5f5;
+    --primary-dark: #0d47a1;
+    --accent: #0097a7;
+    --success: #2e7d32;
+    --warning: #f57c00;
+    --danger: #e53935;
+    --text-primary: #1F2937;
+    --text-secondary: #6B7280;
+    --text-light: #9CA3AF;
+    --bg-page: #f0f7ff;
+    --bg-card: #FFFFFF;
+    --border: #E5E7EB;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.06);
+    --shadow-lg: 0 10px 30px rgba(0,0,0,0.08);
+  }
+  html, body {
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", Helvetica, "Microsoft YaHei", sans-serif;
+    background: var(--bg-page);
+    color: var(--text-primary);
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.6;
+  }
+  .container { max-width: 1280px; margin: 0 auto; padding: 32px 24px 80px; }
+
+  /* Header */
+  .hero {
+    position: relative;
+    background: linear-gradient(135deg, #0d47a1 0%, #1a73e8 50%, #0097a7 100%);
+    color: #fff;
+    border-radius: 20px;
+    padding: 48px 40px;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(26, 115, 232, 0.3);
+    margin-bottom: 32px;
+  }
+  .hero::before {
+    content: "";
+    position: absolute; top: -80px; right: -80px;
+    width: 320px; height: 320px;
+    background: radial-gradient(circle, rgba(255,255,255,0.18), transparent 70%);
+    border-radius: 50%;
+  }
+  .hero::after {
+    content: "";
+    position: absolute; bottom: -100px; left: -60px;
+    width: 280px; height: 280px;
+    background: radial-gradient(circle, rgba(255,255,255,0.12), transparent 70%);
+    border-radius: 50%;
+  }
+  .hero-content { position: relative; z-index: 1; }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(255,255,255,0.18);
+    backdrop-filter: blur(10px);
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: 13px;
+    margin-bottom: 16px;
+    border: 1px solid rgba(255,255,255,0.25);
+  }
+  .hero h1 { font-size: 32px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 12px; }
+  .hero p { font-size: 15px; opacity: 0.92; max-width: 720px; line-height: 1.7; }
+
+  .meta-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 32px;
+    position: relative;
+    z-index: 1;
+  }
+  .meta-item {
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.22);
+    border-radius: 12px;
+    padding: 16px 20px;
+  }
+  .meta-label { font-size: 12px; opacity: 0.85; margin-bottom: 4px; }
+  .meta-value { font-size: 18px; font-weight: 600; }
+
+  /* Section */
+  .section { margin-bottom: 40px; }
+  .section-title {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 20px;
+  }
+  .section-title .num {
+    width: 32px; height: 32px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    color: #fff;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 14px;
+    box-shadow: 0 4px 10px rgba(26,115,232,0.3);
+  }
+  .section-title h2 {
+    font-size: 22px; font-weight: 700; color: var(--text-primary);
+  }
+  .sub-title {
+    font-size: 16px; font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 16px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .sub-title::before {
+    content: "";
+    width: 4px; height: 16px;
+    background: linear-gradient(180deg, var(--primary), var(--accent));
+    border-radius: 2px;
+  }
+
+  /* KPI cards */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+  .kpi-card {
+    background: var(--bg-card);
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+  .kpi-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+  .kpi-card .icon {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    margin-bottom: 12px;
+  }
+  .kpi-card.blue .icon { background: #e3f2fd; color: var(--primary); }
+  .kpi-card.cyan .icon { background: #e0f7fa; color: var(--accent); }
+  .kpi-card.green .icon { background: #e8f5e9; color: var(--success); }
+  .kpi-card.orange .icon { background: #fff3e0; color: var(--warning); }
+  .kpi-label { font-size: 13px; color: var(--text-secondary); margin-bottom: 6px; }
+  .kpi-value { font-size: 26px; font-weight: 700; color: var(--text-primary); letter-spacing: -0.5px; }
+  .kpi-trend { font-size: 12px; color: var(--text-light); margin-top: 6px; }
+  .kpi-trend .tag {
+    display: inline-block; padding: 2px 8px;
+    border-radius: 6px; font-weight: 600;
+    background: #F3F4F6; color: var(--text-secondary);
+  }
+  .kpi-trend .tag.good { background: #e3f2fd; color: var(--primary); }
+  .kpi-trend .tag.warn { background: #fff3e0; color: var(--warning); }
+  .kpi-trend .tag.bad { background: #ffebee; color: var(--danger); }
+
+  /* Card */
+  .card {
+    background: var(--bg-card);
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--border);
+    margin-bottom: 20px;
+  }
+  .card-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+
+  /* Table */
+  .table-wrap { overflow-x: auto; }
+  table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 14px;
+  }
+  thead th {
+    background: #e3f2fd;
+    color: var(--primary-dark);
+    font-weight: 600;
+    text-align: left;
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+    white-space: nowrap;
+  }
+  tbody td {
+    padding: 14px;
+    border-bottom: 1px solid #F3F4F6;
+    color: var(--text-primary);
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:hover { background: #f0f7ff; }
+  .strong { font-weight: 600; }
+  .num-cell { font-variant-numeric: tabular-nums; }
+
+  /* Bar progress */
+  .bar {
+    height: 8px;
+    border-radius: 999px;
+    background: #F1F1F4;
+    overflow: hidden;
+    position: relative;
+    min-width: 120px;
+  }
+  .bar > span {
+    display: block;
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+    border-radius: 999px;
+    transition: width 0.6s ease;
+  }
+  .bar-cell {
+    display: flex; align-items: center; gap: 10px;
+  }
+
+  /* Quantile badges */
+  .quantile {
+    display: inline-flex; align-items: center;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    background: #F3F4F6; color: var(--text-secondary);
+  }
+  .q-top { background: #ffebee; color: var(--danger); }
+  .q-mid { background: #fff3e0; color: var(--warning); }
+  .q-low { background: #e3f2fd; color: var(--primary); }
+  .q-bot { background: #e8f5e9; color: var(--success); }
+
+  /* Chart container */
+  .chart {
+    width: 100%;
+    height: 320px;
+  }
+  .chart-tall { height: 360px; }
+
+  /* Urgency callout */
+  .urgency-callout {
+    background: linear-gradient(135deg, #fff5f5 0%, #ffebee 100%);
+    border: 2px solid #ef5350;
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin: 20px 0;
+    position: relative;
+    overflow: hidden;
+    animation: urgencyPulse 2s ease-in-out infinite;
+  }
+  @keyframes urgencyPulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(229, 57, 53, 0.2); }
+    50% { box-shadow: 0 0 0 8px rgba(229, 57, 53, 0); }
+  }
+  .urgency-callout::before {
+    content: '⚠️';
+    position: absolute;
+    top: -10px; right: 20px;
+    font-size: 40px; opacity: 0.15;
+  }
+  .urgency-callout .urgency-title {
+    color: var(--danger);
+    font-weight: 700;
+    font-size: 16px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .urgency-callout .urgency-text {
+    font-size: 14px;
+    color: var(--text-primary);
+    line-height: 1.7;
+  }
+
+  /* Diagnosis */
+  .diag-card {
+    background: var(--bg-card);
+    border-radius: 16px;
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--border);
+    margin-bottom: 16px;
+    overflow: hidden;
+  }
+  .diag-head {
+    display: flex; align-items: center; gap: 14px;
+    padding: 18px 24px;
+    background: linear-gradient(135deg, #f0f7ff, #e3f2fd);
+    border-bottom: 1px solid var(--border);
+  }
+  .diag-head .num {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .diag-head .title { font-size: 16px; font-weight: 700; color: var(--text-primary); }
+  .diag-head .subtitle { font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
+  .diag-body {
+    padding: 20px 24px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  .diag-block { }
+  .diag-block-title {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 13px; font-weight: 700;
+    margin-bottom: 12px;
+    color: var(--text-primary);
+  }
+  .diag-block-title .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+  }
+  .conclude .dot { background: var(--warning); }
+  .suggest .dot { background: var(--success); }
+  .diag-block ul {
+    list-style: none;
+    padding: 0;
+  }
+  .diag-block ul li {
+    position: relative;
+    padding: 8px 0 8px 22px;
+    font-size: 13.5px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    border-bottom: 1px dashed #F1F1F4;
+  }
+  .diag-block ul li:last-child { border-bottom: none; }
+  .diag-block ul li::before {
+    content: "";
+    position: absolute;
+    left: 4px; top: 17px;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+  }
+  .conclude ul li::before { background: var(--warning); }
+  .suggest ul li::before { background: var(--success); }
+  .diag-block strong, .diag-block b {
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+
+  .footer {
+    text-align: center;
+    color: var(--text-light);
+    font-size: 12px;
+    margin-top: 40px;
+  }
+
+  @media (max-width: 1024px) {
+    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+    .card-grid-2 { grid-template-columns: 1fr; }
+    .diag-body { grid-template-columns: 1fr; }
+    .meta-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 640px) {
+    .container { padding: 16px 12px 40px; }
+    .hero { padding: 32px 24px; }
+    .hero h1 { font-size: 24px; }
+    .kpi-grid { grid-template-columns: 1fr 1fr; }
+    .kpi-value { font-size: 22px; }
+  }
+</style>
 </head>
 <body>
-    <div class="container">
-        <!-- Header -->
-        <div class="report-header">
-            <h1>📊 个性化流量诊断提收报告</h1>
-            <p>小盟基于您近期的流量表现，生成了个性化专属智能诊断报告，通过多维数据剖析，定位流量漏斗中的瓶颈，提供针对性的优化建议，助您实现收益最大化！</p>
+<div class="container">
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-content">
+      <div class="hero-badge">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        智能诊断 · 个性化报告
+      </div>
+      <h1>📊 个性化流量诊断提收报告</h1>
+      <p>小盟基于您近期的流量表现，生成了个性化专属智能诊断报告，通过多维数据剖析，定位流量漏斗中的瓶颈，提供针对性的优化建议，助您实现收益最大化！</p>
+
+      <div class="meta-grid">
+        <div class="meta-item">
+          <div class="meta-label">媒体名称</div>
+          <div class="meta-value">优酷视频</div>
         </div>
-
-        <!-- Account Info -->
-        <div class="account-info fade-in">
-            <div class="account-info-item">
-                <span class="label">📱 媒体名称：</span>
-                <span class="value">优酷视频</span>
-            </div>
-            <div class="account-info-item">
-                <span class="label">🆔 APP ID：</span>
-                <span class="value">1207119667</span>
-            </div>
-            <div class="account-info-item">
-                <span class="label">📅 诊断周期：</span>
-                <span class="value">2026/05/27 ~ 2026/06/02</span>
-            </div>
+        <div class="meta-item">
+          <div class="meta-label">APP ID</div>
+          <div class="meta-value">1207119667</div>
         </div>
-
-        <!-- Section: Core Data -->
-        <div class="section fade-in">
-            <div class="section-title">
-                <div class="icon">📈</div>
-                核心数据表现
-            </div>
-
-            <!-- 1. Scene Efficiency -->
-            <div class="subsection-title">1. 场景效率</div>
-            <div class="table-wrapper">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>广告场景</th>
-                            <th>预估收入占比</th>
-                            <th>收入占比·行业分位</th>
-                            <th>CPM</th>
-                            <th>CPM·行业分位</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><strong>信息流广告</strong></td>
-                            <td>36.42%</td>
-                            <td>
-                                <div class="percentile-bar-wrapper">
-                                    <div class="percentile-bar"><div class="percentile-bar-fill level-high" style="width:20%"></div></div>
-                                    <span class="badge badge-danger">⚠ 10%~30%</span>
-                                </div>
-                            </td>
-                            <td>¥3.59</td>
-                            <td>
-                                <div class="percentile-bar-wrapper">
-                                    <div class="percentile-bar"><div class="percentile-bar-fill level-good" style="width:72%"></div></div>
-                                    <span class="badge badge-normal">60%~85%</span>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><strong>沉浸式视频流广告</strong></td>
-                            <td>15.83%</td>
-                            <td>
-                                <div class="percentile-bar-wrapper">
-                                    <div class="percentile-bar"><div class="percentile-bar-fill level-high" style="width:20%"></div></div>
-                                    <span class="badge badge-danger">⚠ 10%~30%</span>
-                                </div>
-                            </td>
-                            <td>¥8.23</td>
-                            <td>
-                                <div class="percentile-bar-wrapper">
-                                    <div class="percentile-bar"><div class="percentile-bar-fill level-medium" style="width:45%"></div></div>
-                                    <span class="badge badge-warning">30%~60%</span>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><strong>激励广告</strong></td>
-                            <td>15.76%</td>
-                            <td>
-                                <div class="percentile-bar-wrapper">
-                                    <div class="percentile-bar"><div class="percentile-bar-fill level-good" style="width:72%"></div></div>
-                                    <span class="badge badge-normal">60%~85%</span>
-                                </div>
-                            </td>
-                            <td>¥17.51</td>
-                            <td>
-                                <div class="percentile-bar-wrapper">
-                                    <div class="percentile-bar"><div class="percentile-bar-fill level-excellent" style="width:92%"></div></div>
-                                    <span class="badge badge-success">✓ 85%~100%</span>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><strong>视频贴片广告</strong></td>
-                            <td>15.25%</td>
-                            <td>
-                                <div class="percentile-bar-wrapper">
-                                    <div class="percentile-bar"><div class="percentile-bar-fill level-good" style="width:72%"></div></div>
-                                    <span class="badge badge-normal">60%~85%</span>
-                                </div>
-                            </td>
-                            <td>¥3.76</td>
-                            <td>
-                                <div class="percentile-bar-wrapper">
-                                    <div class="percentile-bar"><div class="percentile-bar-fill level-good" style="width:72%"></div></div>
-                                    <span class="badge badge-normal">60%~85%</span>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><strong>横幅广告</strong></td>
-                            <td>11.47%</td>
-                            <td>
-                                <div class="percentile-bar-wrapper">
-                                    <div class="percentile-bar"><div class="percentile-bar-fill level-good" style="width:72%"></div></div>
-                                    <span class="badge badge-normal">60%~85%</span>
-                                </div>
-                            </td>
-                            <td>¥3.53</td>
-                            <td>
-                                <div class="percentile-bar-wrapper">
-                                    <div class="percentile-bar"><div class="percentile-bar-fill level-good" style="width:72%"></div></div>
-                                    <span class="badge badge-normal">60%~85%</span>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><strong>开屏广告</strong></td>
-                            <td>5.26%</td>
-                            <td>
-                                <div class="percentile-bar-wrapper">
-                                    <div class="percentile-bar"><div class="percentile-bar-fill level-good" style="width:72%"></div></div>
-                                    <span class="badge badge-normal">60%~85%</span>
-                                </div>
-                            </td>
-                            <td>¥9.65</td>
-                            <td>
-                                <div class="percentile-bar-wrapper">
-                                    <div class="percentile-bar"><div class="percentile-bar-fill level-good" style="width:72%"></div></div>
-                                    <span class="badge badge-normal">60%~85%</span>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- Urgency callout for low percentile -->
-            <div class="urgency-callout">
-                <div class="urgency-title">🚨 紧急关注：收入占比处于行业低水位</div>
-                <div class="urgency-text">
-                    <strong>信息流广告</strong>与<strong>沉浸式视频流广告</strong>的预估收入占比仅处于同行业 <strong>10%~30%</strong> 分位水平，远低于行业中位数。这意味着您在这两个核心场景上的变现潜力尚未充分释放，存在显著的增收空间。建议立即关注并优化！
-                </div>
-            </div>
-
-            <!-- 2. Funnel -->
-            <div class="subsection-title">2. 变现漏斗</div>
-            
-            <div class="funnel-container">
-                <div class="funnel-step">
-                    <span class="funnel-label">广告位请求承接率</span>
-                    <div class="funnel-bar" style="width:70.89%; background: linear-gradient(90deg, #1a73e8, #42a5f5);">70.89%</div>
-                    <span class="funnel-value"><span class="badge badge-normal">60%~85%</span></span>
-                </div>
-                <div style="text-align:center; color: var(--gray-600); font-size: 20px;">↓</div>
-                <div class="funnel-step">
-                    <span class="funnel-label">广告位填充率</span>
-                    <div class="funnel-bar" style="width:68.29%; background: linear-gradient(90deg, #f57c00, #ffa726);">68.29%</div>
-                    <span class="funnel-value"><span class="badge badge-warning">30%~60%</span></span>
-                </div>
-                <div style="text-align:center; color: var(--gray-600); font-size: 20px;">↓</div>
-                <div class="funnel-step">
-                    <span class="funnel-label">广告位曝光率</span>
-                    <div class="funnel-bar" style="width:50%; background: linear-gradient(90deg, #2e7d32, #66bb6a);">1.93%</div>
-                    <span class="funnel-value"><span class="badge badge-success">✓ 85%~100%</span></span>
-                </div>
-                <div style="text-align:center; color: var(--gray-600); font-size: 20px;">↓</div>
-                <div class="funnel-step">
-                    <span class="funnel-label">日均预估收入</span>
-                    <div class="funnel-bar" style="width:60%; background: linear-gradient(90deg, #e53935, #ff5252);">¥8,553.20</div>
-                    <span class="funnel-value"><span class="badge badge-danger">⚠ 10%~30%</span></span>
-                </div>
-            </div>
-
-            <div class="urgency-callout">
-                <div class="urgency-title">🚨 日均收入处于行业底部（10%~30%分位）</div>
-                <div class="urgency-text">
-                    您的日均预估收入 ¥8,553.20 仅处于同行业 <strong>10%~30%</strong> 分位，填充率 68.29% 处于 30%~60% 分位。漏斗中间环节存在明显断层，大量请求未能成功转化为收益。<strong>每延迟一天优化，日均可能损失数千元潜在收入。</strong>
-                </div>
-            </div>
-
-            <!-- 3. Shield Rules -->
-            <div class="subsection-title">3. 当前生效可出库存</div>
-            <div class="table-wrapper">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>当前生效屏蔽规则名称</th>
-                            <th>屏蔽维度</th>
-                            <th>屏蔽影响</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><strong>优酷基础屏蔽规则</strong></td>
-                            <td>行业, 关键词, 包名</td>
-                            <td><span class="impact-negative">-18.28%</span></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="alert-box warning">
-                <span class="alert-icon">⚡</span>
-                <div class="alert-content">
-                    <div class="alert-title">屏蔽规则导致 18.28% 的预算流失</div>
-                    <div class="alert-text">当前屏蔽规则包含「行业」维度，颗粒度较粗，可能误伤高价值预算。建议将行业维度下沉至包名级别进行精细化管控。</div>
-                </div>
-            </div>
-
-            <!-- 4. SDK Version -->
-            <div class="subsection-title">4. 当前最新版本号分布</div>
-            
-            <div class="sdk-coverage">
-                <div class="sdk-coverage-bar">
-                    <div class="sdk-coverage-segment" style="width:0.01%; background: #e53935;" title="V 4.690: 0.00%"></div>
-                    <div class="sdk-coverage-segment" style="width:92.69%; background: #1a73e8;">V 4.671 (92.69%)</div>
-                    <div class="sdk-coverage-segment" style="width:6.53%; background: #42a5f5;">V 4.620</div>
-                    <div class="sdk-coverage-segment" style="width:0.79%; background: #90caf9;"></div>
-                </div>
-                <div class="sdk-coverage-legend">
-                    <div class="legend-item"><div class="legend-dot" style="background:#e53935"></div><span>V 4.690（最新）: 0.00%</span></div>
-                    <div class="legend-item"><div class="legend-dot" style="background:#1a73e8"></div><span>V 4.671: 92.69%</span></div>
-                    <div class="legend-item"><div class="legend-dot" style="background:#42a5f5"></div><span>V 4.620: 6.53%</span></div>
-                    <div class="legend-item"><div class="legend-dot" style="background:#90caf9"></div><span>V 4.580: 0.79%</span></div>
-                </div>
-            </div>
-
-            <div class="alert-box danger">
-                <span class="alert-icon">🔴</span>
-                <div class="alert-content">
-                    <div class="alert-title">最新 SDK 版本覆盖率为 0%！</div>
-                    <div class="alert-text">最新版本 V 4.690 的曝光占比为 0.00%，SDK 覆盖严重不足。这意味着您无法使用最新的广告模板和优化能力，正在持续损失潜在收益。</div>
-                </div>
-            </div>
+        <div class="meta-item">
+          <div class="meta-label">诊断周期</div>
+          <div class="meta-value">2026.05.27 ~ 2026.06.02</div>
         </div>
+      </div>
+    </div>
+  </div>
 
-        <!-- Section: Diagnosis -->
-        <div class="section fade-in">
-            <div class="section-title">
-                <div class="icon">🔧</div>
-                链路诊断优化
-            </div>
-
-            <!-- 1. 拓库存 -->
-            <div class="diagnosis-card">
-                <div class="diagnosis-card-title">
-                    <span>1️⃣</span> 拓库存 —— 挖掘并创建高价值新广告场景，提高 Adload
-                </div>
-                <div class="diagnosis-conclusion">
-                    <h4>🔍 诊断结论</h4>
-                    <ul>
-                        <li>您当前 8 个广告场景中，已接入 6 个场景，<strong style="color: var(--danger);">插屏广告、详情页插入广告</strong> 尚未接入，存在场景未接齐情况。尤其是 <strong>插屏广告</strong> 属于高价值场景缺位。</li>
-                        <li>激励广告（15.76%）、开屏广告（5.26%） 已接入但收入占比处于同行业 60%～85% 分位，Adload 可能存在不足。</li>
-                        <li>信息流广告 CPM ¥3.59、视频贴片广告 CPM ¥3.76、横幅广告 CPM ¥3.53、开屏广告 CPM ¥9.65 处于同行业 60%～85% 分位，激励广告 CPM ¥17.51 处于 85%～100% 分位，CPM 处于行业靠后水位，变现效率偏低。</li>
-                    </ul>
-                </div>
-                <div class="diagnosis-suggestion">
-                    <h4>💡 优化建议</h4>
-                    <ul>
-                        <li>可结合自身产品形态评估接入条件，建议<strong>优先接入插屏广告</strong>，捕获高出价广告。</li>
-                        <li>建议提升激励广告、开屏广告的 Adload，例如缩短刷间隔、增加曝光位次、前置入口层级。</li>
-                        <li>建议检查信息流广告、视频贴片广告、横幅广告、开屏广告、激励广告的 SDK 版本与竞价策略，确认是否启用最新模板与无底价 Bidding 以拉升 CPM。</li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- 2. 精请求 -->
-            <div class="diagnosis-card">
-                <div class="diagnosis-card-title">
-                    <span>2️⃣</span> 精请求 —— 提升请求 CPR，提高承接率
-                </div>
-                <div class="diagnosis-conclusion">
-                    <h4>🔍 诊断结论</h4>
-                    <ul>
-                        <li>广告位请求承接率 70.89%，处于同行业 60%～85% 分位；同期填充率 68.29% 处于 30%～60% 分位，承接率较低，请求侧可能存在重复请求或无效请求。</li>
-                        <li>曝光率仅 1.93% 处于同行业 85%～100% 分位，渲染或展示触达环节存在瓶颈。</li>
-                    </ul>
-                </div>
-                <div class="diagnosis-suggestion">
-                    <h4>💡 优化建议</h4>
-                    <ul>
-                        <li>拆分多刷广告位，降低重复请求占比。</li>
-                        <li>合并同一物理场景内的并发请求，减少瞬时高并发对承接率的拖拽。</li>
-                        <li>优化广告位预加载时机，使请求贴近真实曝光时机。</li>
-                        <li>排查 SDK 接入是否存在异常重试逻辑。</li>
-                        <li>检查是否存在无法正常渲染的情况，导致素材无法正常曝光。</li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- 3. 优参竞 -->
-            <div class="diagnosis-card">
-                <div class="diagnosis-card-title">
-                    <span>3️⃣</span> 优参竞 —— 降低底价，全场景接入 Bidding
-                </div>
-                <div class="diagnosis-conclusion">
-                    <h4>🔍 诊断结论</h4>
-                    <ul>
-                        <li>广告位填充率 68.29% 处于同行业 30%～60% 分位，参竞表现良好。</li>
-                    </ul>
-                </div>
-                <div class="diagnosis-suggestion">
-                    <h4>💡 优化建议</h4>
-                    <ul>
-                        <li>建议维持当前策略，关注是否有突发跌幅。</li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- 4. 丰预算 -->
-            <div class="diagnosis-card">
-                <div class="diagnosis-card-title">
-                    <span>4️⃣</span> 丰预算 —— 精细化屏蔽策略
-                </div>
-                <div class="diagnosis-conclusion">
-                    <h4>🔍 诊断结论</h4>
-                    <ul>
-                        <li>1 条规则包含「行业」维度，屏蔽颗粒度较粗，可能误伤高价值预算。</li>
-                    </ul>
-                </div>
-                <div class="diagnosis-suggestion">
-                    <h4>💡 优化建议</h4>
-                    <ul>
-                        <li>查看当前生效规则是否可以放开，扩大预算库存。</li>
-                        <li>建议将「行业」维度的屏蔽下沉至「包名」级别，避免误伤行业整体预算。</li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- 5. 提双率 -->
-            <div class="diagnosis-card">
-                <div class="diagnosis-card-title">
-                    <span>5️⃣</span> 提双率 —— 更新 SDK，享用最新模板与下载链路
-                </div>
-                <div class="diagnosis-conclusion">
-                    <h4>🔍 诊断结论</h4>
-                    <ul>
-                        <li>当前最新 SDK 对应版本 V 4.690 曝光占比仅 <strong style="color: var(--danger);">0.00%</strong>，SDK 覆盖明显不足，模板触达受限。</li>
-                    </ul>
-                </div>
-                <div class="diagnosis-suggestion">
-                    <h4>💡 优化建议</h4>
-                    <ul>
-                        <li>优先推动各媒体 SDK 升级至最新版本 V 4.690，以释放模板的完整收益，并配合 App 发版覆盖用户。</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <!-- Footer -->
-        <div style="text-align:center; padding: 32px 0; color: var(--gray-600); font-size: 13px;">
-            <p>本报告由 iGRO 智能诊断系统自动生成 · 腾讯营销联盟</p>
-            <p style="margin-top: 4px;">诊断周期：2026年05月27日 ~ 2026年06月02日</p>
-        </div>
+  <!-- Section 1: 核心数据 -->
+  <div class="section">
+    <div class="section-title">
+      <div class="num">1</div>
+      <h2>核心数据表现</h2>
     </div>
 
-    <script>
-        // Scroll animation
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, { threshold: 0.1 });
+    <!-- KPIs -->
+    <div class="kpi-grid">
+      <div class="kpi-card blue">
+        <div class="icon">📥</div>
+        <div class="kpi-label">广告位请求承接率</div>
+        <div class="kpi-value">70.89%</div>
+        <div class="kpi-trend"><span class="tag good">同行业 60%~85% 分位</span></div>
+      </div>
+      <div class="kpi-card cyan">
+        <div class="icon">⚡</div>
+        <div class="kpi-label">广告位填充率</div>
+        <div class="kpi-value">68.29%</div>
+        <div class="kpi-trend"><span class="tag warn">同行业 30%~60% 分位</span></div>
+      </div>
+      <div class="kpi-card orange">
+        <div class="icon">👁️</div>
+        <div class="kpi-label">广告位曝光率</div>
+        <div class="kpi-value">1.93%</div>
+        <div class="kpi-trend"><span class="tag good">同行业 85%~100% 分位</span></div>
+      </div>
+      <div class="kpi-card green">
+        <div class="icon">💰</div>
+        <div class="kpi-label">日均预估收入</div>
+        <div class="kpi-value">¥ 8,553</div>
+        <div class="kpi-trend"><span class="tag bad">同行业 10%~30% 分位</span></div>
+      </div>
+    </div>
 
-        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+    <!-- 场景效率 -->
+    <h3 class="sub-title">场景效率</h3>
+    <div class="card-grid-2">
+      <div class="card">
+        <div class="strong" style="margin-bottom:8px;">预估收入占比分布</div>
+        <div id="chartPie" class="chart"></div>
+      </div>
+      <div class="card">
+        <div class="strong" style="margin-bottom:8px;">各场景 CPM 对比 (元)</div>
+        <div id="chartBar" class="chart"></div>
+      </div>
+    </div>
 
-        // Animate percentile bars on load
-        window.addEventListener('load', () => {
-            document.querySelectorAll('.percentile-bar-fill').forEach(bar => {
-                const width = bar.style.width;
-                bar.style.width = '0%';
-                setTimeout(() => {
-                    bar.style.width = width;
-                }, 300);
-            });
-        });
-    </script>
+    <div class="card">
+      <div class="strong" style="margin-bottom:16px;">场景效率明细</div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>广告场景</th>
+              <th>预估收入占比</th>
+              <th>占比 行业分位</th>
+              <th>CPM (元)</th>
+              <th>CPM 行业分位</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="strong">信息流广告</td>
+              <td class="num-cell">
+                <div class="bar-cell"><div class="bar"><span style="width:91%"></span></div><span>36.42%</span></div>
+              </td>
+              <td><span class="quantile q-top">10%~30%</span></td>
+              <td class="num-cell">3.59</td>
+              <td><span class="quantile q-low">60%~85%</span></td>
+            </tr>
+            <tr>
+              <td class="strong">沉浸式视频流广告</td>
+              <td class="num-cell">
+                <div class="bar-cell"><div class="bar"><span style="width:40%"></span></div><span>15.83%</span></div>
+              </td>
+              <td><span class="quantile q-top">10%~30%</span></td>
+              <td class="num-cell">8.23</td>
+              <td><span class="quantile q-mid">30%~60%</span></td>
+            </tr>
+            <tr>
+              <td class="strong">激励广告</td>
+              <td class="num-cell">
+                <div class="bar-cell"><div class="bar"><span style="width:39%"></span></div><span>15.76%</span></div>
+              </td>
+              <td><span class="quantile q-low">60%~85%</span></td>
+              <td class="num-cell">17.51</td>
+              <td><span class="quantile q-bot">85%~100%</span></td>
+            </tr>
+            <tr>
+              <td class="strong">视频贴片广告</td>
+              <td class="num-cell">
+                <div class="bar-cell"><div class="bar"><span style="width:38%"></span></div><span>15.25%</span></div>
+              </td>
+              <td><span class="quantile q-low">60%~85%</span></td>
+              <td class="num-cell">3.76</td>
+              <td><span class="quantile q-low">60%~85%</span></td>
+            </tr>
+            <tr>
+              <td class="strong">横幅广告</td>
+              <td class="num-cell">
+                <div class="bar-cell"><div class="bar"><span style="width:28%"></span></div><span>11.47%</span></div>
+              </td>
+              <td><span class="quantile q-low">60%~85%</span></td>
+              <td class="num-cell">3.53</td>
+              <td><span class="quantile q-low">60%~85%</span></td>
+            </tr>
+            <tr>
+              <td class="strong">开屏广告</td>
+              <td class="num-cell">
+                <div class="bar-cell"><div class="bar"><span style="width:13%"></span></div><span>5.26%</span></div>
+              </td>
+              <td><span class="quantile q-low">60%~85%</span></td>
+              <td class="num-cell">9.65</td>
+              <td><span class="quantile q-low">60%~85%</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Urgency callout for low percentile -->
+    <div class="urgency-callout">
+      <div class="urgency-title">🚨 紧急关注：收入占比处于行业低水位</div>
+      <div class="urgency-text">
+        <strong>信息流广告</strong>与<strong>沉浸式视频流广告</strong>的预估收入占比仅处于同行业 <strong>10%~30%</strong> 分位水平，远低于行业中位数。这意味着您在这两个核心场景上的变现潜力尚未充分释放，存在显著的增收空间。建议立即关注并优化！
+      </div>
+    </div>
+
+    <!-- 变现漏斗 -->
+    <h3 class="sub-title">变现漏斗</h3>
+    <div class="card-grid-2">
+      <div class="card">
+        <div class="strong" style="margin-bottom:8px;">变现漏斗</div>
+        <div id="chartFunnel" class="chart chart-tall"></div>
+      </div>
+      <div class="card">
+        <div class="strong" style="margin-bottom:16px;">关键指标</div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>数据指标</th>
+                <th>周期内表现</th>
+                <th>行业分位</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>广告位请求承接率</td><td class="num-cell strong">70.89%</td><td><span class="quantile q-low">60%~85%</span></td></tr>
+              <tr><td>广告位填充率</td><td class="num-cell strong">68.29%</td><td><span class="quantile q-mid">30%~60%</span></td></tr>
+              <tr><td>广告位曝光率</td><td class="num-cell strong">1.93%</td><td><span class="quantile q-bot">85%~100%</span></td></tr>
+              <tr><td>日均预估收入</td><td class="num-cell strong">¥ 8,553.20</td><td><span class="quantile q-top">10%~30%</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="urgency-callout">
+      <div class="urgency-title">🚨 日均收入处于行业底部（10%~30%分位）</div>
+      <div class="urgency-text">
+        您的日均预估收入 ¥8,553.20 仅处于同行业 <strong>10%~30%</strong> 分位，填充率 68.29% 处于 30%~60% 分位。漏斗中间环节存在明显断层，大量请求未能成功转化为收益。<strong>每延迟一天优化，日均可能损失数千元潜在收入。</strong>
+      </div>
+    </div>
+
+    <!-- 库存 & 版本号 -->
+    <div class="card-grid-2">
+      <div class="card">
+        <div class="strong" style="margin-bottom:16px;">当前生效屏蔽规则</div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>规则名称</th><th>屏蔽维度</th><th>屏蔽影响</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="strong">优酷基础屏蔽规则</td>
+                <td>
+                  <span class="quantile q-low">行业</span>
+                  <span class="quantile q-low">关键词</span>
+                  <span class="quantile q-low">包名</span>
+                </td>
+                <td><span class="quantile q-top">-18.28%</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div style="margin-top:14px; padding:12px; background:#ffebee; border-radius:8px; font-size:13px; color:#b71c1c;">
+          ⚠️ 当前屏蔽规则导致预算库存损失约 <b>18.28%</b>，建议进一步精细化拆分。
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="strong" style="margin-bottom:8px;">当前最新版本号分布 (Android)</div>
+        <div id="chartVersion" class="chart"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 2: 链路诊断优化 -->
+  <div class="section">
+    <div class="section-title">
+      <div class="num">2</div>
+      <h2>链路诊断优化</h2>
+    </div>
+
+    <!-- 1. 拓库存 -->
+    <div class="diag-card">
+      <div class="diag-head">
+        <div class="num">1</div>
+        <div>
+          <div class="title">拓库存 — 挖掘并创建高价值新广告场景，提高 Adload</div>
+          <div class="subtitle">从场景丰富度与广告入口深度入手，扩大可变现库存</div>
+        </div>
+      </div>
+      <div class="diag-body">
+        <div class="diag-block conclude">
+          <div class="diag-block-title"><span class="dot"></span>诊断结论</div>
+          <ul>
+            <li>当前 <b>8 个</b> 广告场景中，已接入 <b>6 个</b>，<b>插屏广告、详情页插入广告</b> 尚未接入，存在场景未接齐情况。</li>
+            <li><b>插屏广告</b> 尚未接入，属高价值场景缺位，高价值场景整体变现潜力未充分释放。</li>
+            <li><b>激励广告 (15.76%)</b>、<b>开屏广告 (5.26%)</b> 已接入但收入占比处行业 60%~85% 分位，Adload 可能存在不足，广告入口深度有待提升。</li>
+            <li>信息流广告 CPM 3.59 元、视频贴片广告 CPM 3.76 元、横幅广告 CPM 3.53 元、开屏广告 CPM 9.65 元处于同行业 60%~85% 分位，激励广告 CPM 17.51 元处于同行业 85%~100% 分位，CPM 处于行业靠后水位，变现效率偏低，需关注流量质量。</li>
+          </ul>
+        </div>
+        <div class="diag-block suggest">
+          <div class="diag-block-title"><span class="dot"></span>优化建议</div>
+          <ul>
+            <li>可结合自身产品形态评估是否具备接入条件，如具备接入条件，可尝试接入 <b>插屏广告、详情页插入广告</b>。建议优先接入 <b>插屏广告</b>，捕获高出价广告。</li>
+            <li>建议提升 <b>激励广告、开屏广告</b> 的 Adload，例如缩短刷间隔、增加曝光位次、前置入口层级，提升场景收入。</li>
+            <li>建议检查 信息流广告、视频贴片广告、横幅广告、开屏广告、激励广告 的 SDK 版本与竞价策略，确认是否启用最新模板与无底价 Bidding 以拉升 CPM。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. 精请求 -->
+    <div class="diag-card">
+      <div class="diag-head">
+        <div class="num">2</div>
+        <div>
+          <div class="title">精请求 — 提升请求 CPR，提高承接率</div>
+          <div class="subtitle">优化请求侧逻辑，减少重复与无效请求</div>
+        </div>
+      </div>
+      <div class="diag-body">
+        <div class="diag-block conclude">
+          <div class="diag-block-title"><span class="dot"></span>诊断结论</div>
+          <ul>
+            <li>广告位请求承接率 <b>70.89%</b>，处于同行业 60%~85% 分位；同期填充率 <b>68.29%</b> 处于同行业 30%~60% 分位，承接率较低，请求侧可能存在重复请求或无效请求。</li>
+            <li>曝光率仅 <b>1.93%</b> 处于同行业 85%~100% 分位，渲染或展示触达环节存在瓶颈。</li>
+          </ul>
+        </div>
+        <div class="diag-block suggest">
+          <div class="diag-block-title"><span class="dot"></span>优化建议</div>
+          <ul>
+            <li>拆分多刷广告位，降低重复请求占比。</li>
+            <li>合并同一物理场景内的并发请求，减少瞬时高并发对承接率的拖拽。</li>
+            <li>优化广告位预加载时机，使请求贴近真实曝光时机。</li>
+            <li>排查 SDK 接入是否存在异常重试逻辑。</li>
+            <li>请检查是否存在无法正常渲染的情况，导致素材无法正常曝光。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. 优参竞 -->
+    <div class="diag-card">
+      <div class="diag-head">
+        <div class="num">3</div>
+        <div>
+          <div class="title">优参竞 — 降低底价，全场景接入 Bidding</div>
+          <div class="subtitle">维持良好参竞水位，关注突发跌幅</div>
+        </div>
+      </div>
+      <div class="diag-body">
+        <div class="diag-block conclude">
+          <div class="diag-block-title"><span class="dot"></span>诊断结论</div>
+          <ul>
+            <li>广告位填充率 <b>68.29%</b> 处于同行业 30%~60% 分位，参竞表现良好。</li>
+          </ul>
+        </div>
+        <div class="diag-block suggest">
+          <div class="diag-block-title"><span class="dot"></span>优化建议</div>
+          <ul>
+            <li>建议维持当前策略，关注是否有突发跌幅。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. 丰预算 -->
+    <div class="diag-card">
+      <div class="diag-head">
+        <div class="num">4</div>
+        <div>
+          <div class="title">丰预算 — 精细化屏蔽策略</div>
+          <div class="subtitle">从行业到包名级的精细化下沉，避免误伤</div>
+        </div>
+      </div>
+      <div class="diag-body">
+        <div class="diag-block conclude">
+          <div class="diag-block-title"><span class="dot"></span>诊断结论</div>
+          <ul>
+            <li><b>1 条</b>规则包含「行业」维度，屏蔽颗粒度较粗，可能误伤高价值预算。</li>
+          </ul>
+        </div>
+        <div class="diag-block suggest">
+          <div class="diag-block-title"><span class="dot"></span>优化建议</div>
+          <ul>
+            <li>可查看当前生效规则是否可以放开，扩大预算库存。</li>
+            <li>建议将「行业」维度的屏蔽下沉至「包名」级别，避免误伤行业整体预算。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. 提双率 -->
+    <div class="diag-card">
+      <div class="diag-head">
+        <div class="num">5</div>
+        <div>
+          <div class="title">提双率 — 更新 SDK，享用最新模板与下载链路</div>
+          <div class="subtitle">推动 SDK 版本升级，提升模板触达率</div>
+        </div>
+      </div>
+      <div class="diag-body">
+        <div class="diag-block conclude">
+          <div class="diag-block-title"><span class="dot"></span>诊断结论</div>
+          <ul>
+            <li>当前最新 SDK 对应版本 <b>V 4.690</b> 曝光占比仅 <b>0.00%</b>，SDK 覆盖明显不足，模板触达受限。</li>
+          </ul>
+        </div>
+        <div class="diag-block suggest">
+          <div class="diag-block-title"><span class="dot"></span>优化建议</div>
+          <ul>
+            <li>优先推动各媒体 SDK 升级至最新版本 <b>V 4.690</b>，以释放模板的完整收益，并配合 App 发版覆盖用户。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>本报告由 iGRO 智能诊断系统自动生成 · 腾讯营销联盟</p>
+    <p style="margin-top:4px;">诊断周期：2026年05月27日 ~ 2026年06月02日</p>
+  </div>
+</div>
+
+<script>
+  const palette = ['#1a73e8', '#0d47a1', '#0097a7', '#2e7d32', '#f57c00', '#e53935'];
+
+  // 1. Pie (Doughnut): 预估收入占比
+  const pie = echarts.init(document.getElementById('chartPie'));
+  pie.setOption({
+    tooltip: { trigger: 'item', formatter: '{b}<br/>占比: <b>{c}%</b> ({d}%)' },
+    legend: { bottom: 0, icon: 'circle', itemWidth: 8, itemHeight: 8, textStyle: { fontSize: 12, color: '#6B7280' } },
+    color: palette,
+    series: [{
+      name: '收入占比',
+      type: 'pie',
+      radius: ['45%', '72%'],
+      center: ['50%', '45%'],
+      avoidLabelOverlap: true,
+      itemStyle: { borderRadius: 6, borderColor: '#fff', borderWidth: 2 },
+      label: { show: true, formatter: '{b}\n{c}%', fontSize: 11, color: '#374151' },
+      labelLine: { length: 8, length2: 8 },
+      data: [
+        { value: 36.42, name: '信息流广告' },
+        { value: 15.83, name: '沉浸式视频流' },
+        { value: 15.76, name: '激励广告' },
+        { value: 15.25, name: '视频贴片' },
+        { value: 11.47, name: '横幅广告' },
+        { value: 5.26, name: '开屏广告' }
+      ]
+    }]
+  });
+
+  // 2. Bar: CPM 对比
+  const bar = echarts.init(document.getElementById('chartBar'));
+  bar.setOption({
+    tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' }, formatter: '{b}<br/>CPM: <b>¥{c}</b>' },
+    grid: { left: 50, right: 24, top: 20, bottom: 50 },
+    xAxis: {
+      type: 'category',
+      data: ['信息流', '横幅', '视频贴片', '沉浸式', '开屏', '激励'],
+      axisLine: { lineStyle: { color: '#E5E7EB' } },
+      axisLabel: { color: '#6B7280', fontSize: 12, interval: 0 },
+      axisTick: { show: false }
+    },
+    yAxis: {
+      type: 'value',
+      axisLine: { show: false },
+      axisTick: { show: false },
+      splitLine: { lineStyle: { color: '#F3F4F6' } },
+      axisLabel: { color: '#9CA3AF', formatter: '¥{value}' }
+    },
+    series: [{
+      type: 'bar',
+      data: [3.59, 3.53, 3.76, 8.23, 9.65, 17.51],
+      barWidth: 28,
+      itemStyle: {
+        borderRadius: [6, 6, 0, 0],
+        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+          { offset: 0, color: '#1a73e8' },
+          { offset: 1, color: '#0097a7' }
+        ])
+      },
+      label: { show: true, position: 'top', color: '#374151', fontWeight: 600, formatter: '¥{c}' }
+    }]
+  });
+
+  // 3. Funnel: 变现漏斗
+  const funnel = echarts.init(document.getElementById('chartFunnel'));
+  funnel.setOption({
+    tooltip: { trigger: 'item', formatter: '{b}: <b>{c}%</b>' },
+    color: ['#0d47a1', '#1a73e8', '#42a5f5', '#0097a7'],
+    series: [{
+      type: 'funnel',
+      left: '10%', right: '10%', top: 20, bottom: 20,
+      width: '80%',
+      min: 0, max: 100,
+      sort: 'descending',
+      gap: 4,
+      label: { show: true, position: 'inside', color: '#fff', fontWeight: 600, fontSize: 13,
+        formatter: '{b}\n{c}%' },
+      itemStyle: { borderColor: '#fff', borderWidth: 2 },
+      data: [
+        { value: 100, name: '广告位请求' },
+        { value: 70.89, name: '请求承接 70.89%' },
+        { value: 48.41, name: '填充 (≈68.29%)' },
+        { value: 1.93, name: '曝光 1.93%' }
+      ]
+    }]
+  });
+
+  // 4. Version distribution - 环形图展示占比
+  const ver = echarts.init(document.getElementById('chartVersion'));
+  ver.setOption({
+    tooltip: { trigger: 'item', formatter: '{b}<br/>曝光占比: <b>{c}%</b> ({d}%)' },
+    legend: { bottom: 0, icon: 'circle', itemWidth: 8, itemHeight: 8, textStyle: { fontSize: 12, color: '#6B7280' } },
+    color: ['#e53935', '#1a73e8', '#42a5f5', '#90caf9'],
+    series: [{
+      name: '版本分布',
+      type: 'pie',
+      radius: ['40%', '68%'],
+      center: ['50%', '42%'],
+      avoidLabelOverlap: true,
+      itemStyle: { borderRadius: 6, borderColor: '#fff', borderWidth: 2 },
+      label: { 
+        show: true, 
+        formatter: function(params) {
+          if (params.value === 0) return params.name + '\n⚠️ 0%';
+          return params.name + '\n' + params.value + '%';
+        }, 
+        fontSize: 11, 
+        color: '#374151' 
+      },
+      labelLine: { length: 8, length2: 8 },
+      emphasis: {
+        label: { show: true, fontSize: 14, fontWeight: 'bold' }
+      },
+      data: [
+        { value: 0.01, name: 'V 4.690 (最新)', itemStyle: { color: '#e53935' } },
+        { value: 92.69, name: 'V 4.671', itemStyle: { color: '#1a73e8' } },
+        { value: 6.53, name: 'V 4.620', itemStyle: { color: '#42a5f5' } },
+        { value: 0.79, name: 'V 4.580', itemStyle: { color: '#90caf9' } }
+      ]
+    }]
+  });
+
+  window.addEventListener('resize', () => {
+    pie.resize(); bar.resize(); funnel.resize(); ver.resize();
+  });
+</script>
 </body>
 </html>
